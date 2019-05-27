@@ -1,0 +1,43 @@
+pragma solidity ^0.4.25;
+contract Roll {
+    uint max_Num = 100;
+    struct Gamble{
+        string Name;
+        uint RandomNum;
+        uint PlayerNum;
+        uint BigSmallEven;
+        bool Win;
+    }
+    Gamble[] public gambles;
+    function _createGamble(string _Name ,uint _RandomNum, uint _PlayerNum, uint _BigSmallEven, bool _Win)private {
+        gambles.push(Gamble(_Name, _RandomNum,_PlayerNum,_BigSmallEven,_Win));
+    }
+    
+    function _generateRandomNum(string _str) private view returns (uint){
+        uint rand = uint(keccak256(_str));
+        return rand % max_Num;
+    }
+    function _compare(uint _RandomNum, uint _PlayerNum, uint _BigSmallEven)private view returns (bool) {
+        if (_BigSmallEven == 0)
+        {
+            if  (_PlayerNum > _RandomNum)return true;
+            else    return false;
+        }
+        if  (_BigSmallEven == 1)
+        {
+            if  (_PlayerNum < _RandomNum)return true;
+            else    return false;
+        }
+        if  (_BigSmallEven == 2)
+        {
+            if  (_PlayerNum == _RandomNum)return true;
+            else    return false;
+        }
+    }
+    function createRandomGamble(string _Name, uint _PlayerNum, uint _BigSmallEven) public{
+        uint _RandomNum = _generateRandomNum(_Name);
+        bool _Win = _compare(_Randomnum);
+        _createGamble(_Name, _RandomNum,_PlayerNum,_BigSmallEven,_Win);
+    }
+  
+}
